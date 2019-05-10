@@ -73,7 +73,6 @@ export class ContactComponent implements OnInit {
         const control = this.feedbackForm.get(field);
 
         if (control && control.dirty && !control.valid) {
-
           for (const key in control.errors) {
             if (control.errors.hasOwnProperty(key)) {
               this.formErrors[field] += this.validationMessages[field][key] + ' ';
