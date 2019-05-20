@@ -17,6 +17,8 @@ import { MatSliderModule } from '@angular/material/slider';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import 'hammerjs';
 import { AppComponent } from './app.component';
@@ -33,6 +35,7 @@ import { LoginComponent } from './login/login.component';
 import { DishService } from './services/dish.service';
 import { PromotionService } from './services/promotion.service';
 import { LeaderService } from './services/leader.service';
+import { baseURL } from './shared/baseurl';
 
 import { AppRoutingModule } from './app-routing/app-routing.module';
 
@@ -67,12 +70,15 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
     MatProgressSpinnerModule,
     MatSliderModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpModule,
+    HttpClientModule
   ],
   providers: [
     DishService,
     PromotionService,
-    LeaderService
+    LeaderService,
+    {provide: 'baseURL', useValue: baseURL}
   ],
   entryComponents: [
     LoginComponent
