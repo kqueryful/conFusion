@@ -15,6 +15,7 @@ import { Comment } from '../shared/comment';
 export class DishdetailComponent implements OnInit {
 
   dish: Dish;
+  dishcopy: Dish;
   errMess: string;
   dishIds: string[];
   prev: string;
@@ -35,7 +36,7 @@ export class DishdetailComponent implements OnInit {
   ngOnInit() {
     this.dishService.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
     this.route.params.pipe(switchMap((params: Params) => this.dishService.getDish(params['id'])))
-      .subscribe(dish => {this.dish = dish; this.setPrevNext(dish.id);}, errmess => this.errMess = <any>errmess );
+      .subscribe(dish => {this.dish = dish; this.dishcopy = dish; this.setPrevNext(dish.id);}, errmess => this.errMess = <any>errmess );
   }
 
   formErrors = {
@@ -95,8 +96,11 @@ export class DishdetailComponent implements OnInit {
 
   onSubmit(): void {
     this.comment = this.commentForm.value;
-    this.comment.date = Date();
-    this.dish.comments.push(this.comment);
+    this.comment.date = new Date().toISOString();
+    this.dishcopy.comments.push(this.comment);
+    this.dishService.putDish(this.dishcopy)
+      .subscribe(dish => {this.dish = dish; this.dishcopy = dish;}, 
+        errmess => {this.dish = null; this.dishcopy = null; this.errMess = <any>errmess; })
 
     this.commentForm.reset({
       author:'', 
