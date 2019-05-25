@@ -35,9 +35,7 @@
 
   <div fxFlex fxFlexOffset="20px" class="form-size">
     <h3>Send us your Feedback</h3>
-    <p>{{ feedbackForm.value | json }}  {{ feedbackForm.status | json }}</p>
-
-    <form novalidate [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
+    <form novalidate [formGroup]="feedbackForm" (ngSubmit)="onSubmit()" *ngIf=formVisibility [@expand]>
       <p>
         <mat-form-field class="half-width">
           <input matInput formControlName="firstname" placeholder="First Name" type="text" required>
@@ -65,7 +63,7 @@
           <mat-slide-toggle formControlName="agree">May we contact you?</mat-slide-toggle>
         </td>
         <td>
-          <mat-select placeholder="How?" formControlName="contacttype">
+          <mat-select placeholder="How?" formControlName="contactType">
             <mat-option *ngFor="let ctype of contactType" [value]="ctype">
               {{ ctype }}
             </mat-option>
@@ -81,7 +79,26 @@
 
       <button mat-button type="submit" class="background-primary text-floral-white">Submit</button>
     </form>
-  </div>
 
+    <div *ngIf=returnedFeedback [hidden]="formVisibility" [@expand]>
+      <h3>Your Submission</h3>
+      <p>First Name: {{returnedFeedback.firstname}}</p>
+      <p>Last Name: {{returnedFeedback.lastname}}</p>
+      <p>Tel. Number: {{returnedFeedback.telnum}}</p>
+      <p>Email: {{returnedFeedback.email}}</p>
+      <p>Contact You?: {{returnedFeedback.agree}}</p>
+      <p>How?: {{returnedFeedback.contacttype}}</p>
+      <p>Feedback: {{returnedFeedback.message}}</p>
+    </div>
+    <div [hidden]="formVisibility || returnedFeedback || errMess">
+      <h4>Submitting Form</h4>
+      <mat-spinner></mat-spinner>
+    </div>
+    <div fxFlex *ngIf="errMess">
+      <h2>Error</h2>
+      <h4>{{errMess}}</h4>
+    </div>
+
+  </div>
 </div>
 
