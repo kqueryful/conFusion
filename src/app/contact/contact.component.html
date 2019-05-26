@@ -35,7 +35,7 @@
 
   <div fxFlex fxFlexOffset="20px" class="form-size">
     <h3>Send us your Feedback</h3>
-    <form novalidate [formGroup]="feedbackForm" (ngSubmit)="onSubmit()" *ngIf=formVisibility [@expand]>
+    <form novalidate [formGroup]="feedbackForm" #fform="ngForm" (ngSubmit)="onSubmit()" [hidden]=feedback [@expand]>
       <p>
         <mat-form-field class="half-width">
           <input matInput formControlName="firstname" placeholder="First Name" type="text" required>
@@ -46,7 +46,6 @@
           <mat-error *ngIf="formErrors.lastname">{{formErrors.lastname}}</mat-error>
         </mat-form-field>
       </p>
-
       <p>
         <mat-form-field class="half-width">
           <input matInput formControlName="telnum" placeholder="Tel. Number" type="tel" pattern="[0-9]*" required>
@@ -57,7 +56,6 @@
           <mat-error *ngIf="formErrors.email">{{formErrors.email}}</mat-error>
         </mat-form-field>
       </p>
-
       <table class="form-size">
         <td>
           <mat-slide-toggle formControlName="agree">May we contact you?</mat-slide-toggle>
@@ -70,17 +68,15 @@
           </mat-select>
         </td>
       </table>
-
       <p>
         <mat-form-field class="full-width">
           <textarea matInput formControlName="message" placeholder="Your Feedback" rows=12></textarea>
         </mat-form-field>
       </p>
-
       <button mat-button type="submit" class="background-primary text-floral-white">Submit</button>
     </form>
 
-    <div *ngIf=returnedFeedback [hidden]="formVisibility" [@expand]>
+    <div *ngIf=returnedFeedback [@expand]>
       <h3>Your Submission</h3>
       <p>First Name: {{returnedFeedback.firstname}}</p>
       <p>Last Name: {{returnedFeedback.lastname}}</p>
@@ -90,11 +86,11 @@
       <p>How?: {{returnedFeedback.contacttype}}</p>
       <p>Feedback: {{returnedFeedback.message}}</p>
     </div>
-    <div [hidden]="formVisibility || returnedFeedback || errMess">
+    <div [hidden]="!feedback || returnedFeedback || errMess" [@expand]>
       <h4>Submitting Form</h4>
       <mat-spinner></mat-spinner>
     </div>
-    <div fxFlex *ngIf="errMess">
+    <div fxFlex *ngIf="errMess" [@expand]>
       <h2>Error</h2>
       <h4>{{errMess}}</h4>
     </div>

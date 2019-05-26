@@ -16,7 +16,6 @@ export class ContactComponent implements OnInit {
   feedbackForm: FormGroup;
   feedback: Feedback;
   returnedFeedback: Feedback;
-  formVisibility = true;
   errMess: string;
   contactType = ContactType;
   @ViewChild('fform') feedbackFormDirective;
@@ -93,13 +92,12 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmit() {
-    this.formVisibility = false;
     this.feedback = this.feedbackForm.value;
     
     this.feedbackService.submitFeedback(this.feedback)
       .subscribe(feedback => { 
           this.returnedFeedback=feedback; 
-          setTimeout(() => { this.feedback=null; this.returnedFeedback=null; this.formVisibility=true;}, 5000);
+          setTimeout(() => { this.feedback=null; this.returnedFeedback=null; }, 5000);
         },
         errmess => {this.feedback=null; this.errMess=<any>errmess;})
 
@@ -111,6 +109,6 @@ export class ContactComponent implements OnInit {
       contacttype: 'None',
       message: ''
     });
+    this.feedbackFormDirective.resetForm();
   }
-
 }
